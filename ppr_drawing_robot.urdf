@@ -1,0 +1,157 @@
+<?xml version="1.0"?>
+<!-- 
+	this URDF file made by massyakur 
+	for "Robotlar icin Matematik Temelleri" lesson
+	Project 1
+ -->
+<robot name="cncrobot">
+
+	<!-- Colors -->
+	<material name="red">
+		<color rgba="1 0 0 0.1" />
+	</material>
+	<material name="green">
+		<color rgba="0 1 0 0.1" />
+	</material>
+	<material name="blue">
+		<color rgba="0 0 1 0.1" />
+	</material>
+	<material name="aqua">
+		<color rgba="0 1 1 0.1" />
+	</material>
+	<material name="purple">
+		<color rgba="1 0 1 0.1" />
+	</material>
+
+	<!-- Links -->
+	<link name="base_link" />
+
+	<link name="slider_base_link">
+		<visual>
+			<geometry>
+				<mesh filename="package://SliderBase.stl" scale="3 3 3" />
+			</geometry>
+			<origin xyz="0 0 0" />
+			<material name="aqua" />
+		</visual>
+		<collision>
+			<geometry>
+				<box size="2 0.1 0.1" />
+			</geometry>
+            <origin xyz="0 0 0" />
+		</collision>
+	</link>
+	
+	<link name="mid_case_link">
+		<visual>
+			<geometry>
+				<mesh filename="package://MidCase.stl" scale="3 3 3" />
+			</geometry>
+			<origin xyz="0 0 0" />
+			<material name="red" />
+		</visual>
+		<collision>
+			<geometry>
+				<box size="0.2 0.1 0.1" />
+			</geometry>
+            <origin xyz="0 0 0" />
+		</collision>
+	</link>
+
+	<link name="slider_top_link">
+		<visual>
+			<geometry>
+				<mesh filename="package://SliderTop.stl" scale="3 3 3" />
+			</geometry>
+			<origin xyz="0 0 0" />
+			<material name="green" />
+		</visual>
+		<collision>
+			<geometry>
+				<box size="0.1 2 0.1" />
+			</geometry>
+            <origin xyz="0 0 0" />
+		</collision>
+	</link>
+
+    <link name="mid_link" />
+
+    <link name="pen_holder_link">
+		<visual>
+			<geometry>
+				<mesh filename="package://PenHolder.stl" scale="3 3 3" />
+			</geometry>
+			<origin xyz="0 -2.1 -0.6" />
+			<material name="purple" />
+		</visual>
+        <collision>
+			<geometry>
+				<box size="0.2 0.1 0.1" />
+			</geometry>
+            <origin xyz="0 0 0" />
+		</collision>
+	</link>
+
+    <link name="pen_link">
+        <visual>
+            <geometry>
+                <mesh filename="package://Pen.stl" scale="3 3 3" />
+            </geometry>
+            <origin xyz="0 -2.1 -1" />
+			<material name="blue" />
+        </visual>
+        <collision>	
+          	<geometry>
+            	<cylinder radius = "0.05" length="0.2" />
+          	</geometry>
+            <origin xyz="0 -0.72 -0.25" />
+        </collision>
+     </link>
+
+	<!-- Joints -->
+    <joint name="base_joint" type="fixed">
+		<parent link="base_link" />
+		<child link="slider_base_link" />
+		<origin xyz="0 0 0" />
+		<axis xyz="0 0 0" />
+	</joint>
+
+    <joint name="x_slider_joint" type="prismatic">
+        <parent link="slider_base_link" />
+        <child link="mid_case_link" />
+        <limit effort="100" velocity="1.0" lower="-2.1" upper="2.1" />
+        <origin xyz="0 0 0" />
+        <axis xyz="1 0 0" />
+    </joint>
+
+    <joint name="y_slider_joint" type="prismatic">
+        <parent link="mid_case_link" />
+        <child link="slider_top_link" />
+        <limit effort="100" velocity="1.0" lower="-1.3" upper="1.3" />
+        <origin xyz="0 0 0" />
+        <axis xyz="0 1 0" />
+    </joint>
+
+    <joint name="mid_joint" type="fixed">
+		<parent link="slider_top_link" />
+		<child link="mid_link" />
+		<origin xyz="0 2.1 0.6" />
+		<axis xyz="0 0 0" />
+	</joint>
+
+    <joint name="pen_holder_joint" type="revolute">
+        <parent link="mid_link" />
+        <child link="pen_holder_link" />
+        <limit effort="100" velocity="1.0" lower="-1.57" upper="1.57" />
+        <origin xyz="0 0 0" rpy="0 0 0" />
+        <axis xyz="0 1 0" />
+    </joint>  
+	
+    <joint name="pen_joint" type="fixed">
+		<parent link="pen_holder_link" />
+		<child link="pen_link" />
+		<origin xyz="0 0 0" />
+		<axis xyz="0 0 0" />
+	</joint>
+
+</robot>
